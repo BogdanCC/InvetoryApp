@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colors for the main activity theme -->
+    <color name="colorPrimary">#FF5722</color>
+    <color name="colorPrimaryDark">#E64A19</color>
+    <color name="colorAccent">#FFC107</color>
+
+    <!-- Primary color for the editor -->
+    <color name="editorColorPrimary">#2D3640</color>
+    <!-- Primary dark color for the editor -->
+    <color name="editorColorPrimaryDark">#394450</color>
+    <!-- Accent color for the editor -->
+    <color name="editorColorAccent">#00BCD4</color>
+    <!-- Floating icons colors -->
+    <color name="rfa_layout_color">#212121</color>
+    <color name="rfa_icon_color_pressed">#FFA000</color>
+    <color name="rfa_icon_color_shadow">#777777</color>
+    <color name="delete_icon_color">#F44336</color>
+    <color name="delete_icon_color_pressed">#D32F2F</color>
+    <color name="add_icon_color">#4CAF50</color>
+    <color name="add_icon_color_pressed">#388E3C</color>
+    <color name="add_dummy_color">#00BCD4</color>
+    <color name="add_dummy_color_pressed">#0097A7</color>
+</resources>
