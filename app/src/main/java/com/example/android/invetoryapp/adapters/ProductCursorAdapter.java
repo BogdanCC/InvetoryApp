@@ -76,9 +76,9 @@ public class ProductCursorAdapter extends CursorAdapter{
         final int productId = cursor.getInt(productIdIndex);
 
         // Update the views
-        productNameTV.setText("Name : " + productName);
-        productPriceTV.setText("Price : " + productPrice + " $");
-        productQuantityTV.setText("Quantity : " + Integer.toString(productQuantity));
+        productNameTV.setText(context.getString(R.string.product_name, productName));
+        productPriceTV.setText(context.getString(R.string.product_price, productPrice));
+        productQuantityTV.setText(context.getString(R.string.product_quantity, String.valueOf(productQuantity)));
 
         if(productQuantity == 0) {
             productSellTV.setTextColor(Color.GRAY);

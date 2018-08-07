@@ -57,8 +57,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String productName;
     private double productPrice;
     private int productQuantity;
-    private ImageView increaseQuantityIV;
-    private ImageView decreaseQuantityIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +99,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         editProductName = findViewById(R.id.edit_product_name);
         editProductPrice = findViewById(R.id.edit_product_price);
         editProductQuantity = findViewById(R.id.edit_product_quantity);
-        increaseQuantityIV = findViewById(R.id.increase_quantity);
-        decreaseQuantityIV = findViewById(R.id.decrease_quantity);
+        ImageView increaseQuantityIV = findViewById(R.id.increase_quantity);
+        ImageView decreaseQuantityIV = findViewById(R.id.decrease_quantity);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -119,7 +117,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 productQuantity++;
-                editProductQuantity.setText(Integer.toString(productQuantity));
+                editProductQuantity.setText(String.valueOf(productQuantity));
             }
         });
         decreaseQuantityIV.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +125,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 if(productQuantity == 0) return;
                 productQuantity--;
-                editProductQuantity.setText(Integer.toString(productQuantity));
+                editProductQuantity.setText(String.valueOf(productQuantity));
             }
         });
 
@@ -148,7 +146,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if(productQuantityString.equals("")) {
             productQuantity = 0;
-        } else {
+        } else if (productQuantityString.length() > 6) {
+            Toast.makeText(this, getString(R.string.invalid_quantity), Toast.LENGTH_LONG).show();
+            return true;
+        }  else {
             productQuantity = Integer.parseInt(productQuantityString);
             if(productQuantity < 0) {
                 Toast.makeText(this, getString(R.string.invalid_quantity), Toast.LENGTH_LONG).show();
@@ -421,8 +422,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             // Update the views on the screen with the values from the database
             editProductName.setText(productName);
-            editProductPrice.setText(Float.toString(productPrice));
-            editProductQuantity.setText(Integer.toString(productQuantity));
+            editProductPrice.setText(String.valueOf(productPrice));
+            editProductQuantity.setText(String.valueOf(productQuantity));
             editSupplierName.setText(supplierName);
             editSupplierPhone.setText(supplierPhone);
 

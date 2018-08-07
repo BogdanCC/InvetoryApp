@@ -49,4 +49,9 @@
     <!-- Empty view -->
     <string name="no_products">No products in stock&#8230;</string>
     <string name="add_a_product">Start by adding a product.</string>
+    <!-- List item strings -->
+    <string name="product_name">Name : %1$s</string>
+    <string name="product_price">Price : %1$s $</string>
+    <string name="product_quantity">Quantity : %1$s</string>
+
 </resources>
