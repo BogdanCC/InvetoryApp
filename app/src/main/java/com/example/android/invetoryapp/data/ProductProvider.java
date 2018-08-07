@@ -124,7 +124,7 @@ public class ProductProvider extends ContentProvider {
 
         // Check supplier info
         String supplierName = values.getAsString(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-        Integer supplierPhone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
+        String supplierPhone = values.getAsString(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
         if (supplierName == null || supplierPhone == null) {
             throw new IllegalArgumentException("Invalid supplier info.");
         }
@@ -198,7 +198,7 @@ public class ProductProvider extends ContentProvider {
         }
 
         if(values.containsKey(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE)) {
-            Integer phone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
+            String phone = values.getAsString(ProductContract.ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
             if(phone == null) {
                 throw new IllegalArgumentException("Supplier phone number cannot be null.");
             }

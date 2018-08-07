@@ -376,20 +376,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Since the editor shows all products attributes, define a projection that contains
-        // all columns from the products table
-        String[] projection = {
-                ProductEntry._ID,
-                ProductEntry.COLUMN_PRODUCT_NAME,
-                ProductEntry.COLUMN_PRODUCT_PRICE,
-                ProductEntry.COLUMN_PRODUCT_QUANTITY,
-                ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME,
-                ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE };
-
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,
                 mCurrentProductUri,
-                projection,
+                null,
                 null,
                 null,
                 null);
