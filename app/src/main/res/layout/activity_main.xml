@@ -5,20 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
-    <TextView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textAlignment="center"
-        android:id="@+id/display_view"
-        tools:text="Number of rows in products tabe : 3 \n\n_id sjihgih ighai hi usa9 u 9uas9fu 9sau s9aufus9afu9saf hghghghg"/>
-    <TextView
+        android:layout_height="match_parent"
+        android:id="@+id/product_lv" />
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/row_values"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/display_view"
-        tools:text="1 - itetehih"/>
+        android:layout_height="match_parent"
+        android:id="@+id/lv_empty_view"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/empty_view_padding">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_umbrella_found"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/empty_view_big_text_size"
+                android:textAlignment="center"
+                android:text="@string/no_products"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/add_a_product"/>
+        </LinearLayout>
+    </ScrollView>
+
     <!-- Third party library for floating action button -->
     <com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
         xmlns:rfal="http://schemas.android.com/apk/res-auto"

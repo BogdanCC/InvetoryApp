@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="array_supplier_options">
-        <item>@string/supplier_one</item>
-        <item>@string/supplier_two</item>
-        <item>@string/supplier_three</item>
-        <item>@string/supplier_new</item>
-    </string-array>
-</resources>

@@ -2,6 +2,7 @@
     <!-- Activity names -->
     <string name="app_name">Inventory App</string>
     <string name="editor_activity">Add a product</string>
+    <string name="editor_activity_edit">Edit product</string>
     <!-- Floating button actions strings -->
     <string name="add_product">Add product</string>
     <string name="add_dummy_data">Insert dummy data</string>
@@ -18,9 +19,34 @@
     <string name="hint_product_quantity">Quantity</string>
     <string name="hint_supplier_name">Supplier name</string>
     <string name="hint_supplier_phone">Supplier phone</string>
-    <!-- Suppliers for the String array -->
-    <string name="supplier_one">Supplier 1</string>
-    <string name="supplier_two">Supplier 2</string>
-    <string name="supplier_three">Supplier 3</string>
-    <string name="supplier_new">Other</string>
+    <!-- Errors -->
+    <string name="invalid_quantity">Please enter a valid quantity.</string>
+    <string name="invalid_product_name">Please enter a valid product name.</string>
+    <string name="invalid_supplier_name">Please enter a valid supplier name.</string>
+    <string name="invalid_supplier_phone">Please enter a valid supplier phone.</string>
+    <string name="error_saving">Error with saving product.</string>
+    <string name="error_updating">Error with updating product.</string>
+    <string name="error_deleting">Problem with deleting product</string>
+    <!-- Success -->
+    <string name="product_saved">Product saved.</string>
+    <string name="product_updated">Product updated.</string>
+    <string name="product_deleted">Product deleted.</string>
+    <!-- Dialogs -->
+    <string name="discard_changes_question">Discard your changes and quit editing?</string>
+    <string name="discard_option">Discard</string>
+    <string name="keep_editing_option">Keep editing</string>
+    <string name="delete_product_question">Delete this product?</string>
+    <string name="delete_all_products_question">Delete all products?</string>
+    <string name="delete_option">Delete</string>
+    <string name="cancel_option">Cancel</string>
+    <!-- Dummy data -->
+    <string name="dummy_product_name">New item</string>
+    <string name="dummy_supplier_phone">123456789</string>
+    <string name="dummy_supplier_name">Supplier 1</string>
+    <!-- Buttons -->
+    <string name="product_sell">Sell</string>
+    <string name="call_supplier">Call supplier</string>
+    <!-- Empty view -->
+    <string name="no_products">No products in stock&#8230;</string>
+    <string name="add_a_product">Start by adding a product.</string>
 </resources>

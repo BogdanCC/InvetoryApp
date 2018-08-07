@@ -1,17 +1,24 @@
 package com.example.android.invetoryapp.activities;
 
+import android.app.AlertDialog;
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.android.invetoryapp.R;
+import com.example.android.invetoryapp.adapters.ProductCursorAdapter;
 import com.example.android.invetoryapp.data.ProductContract.ProductEntry;
-import com.example.android.invetoryapp.data.ProductDbHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -20,10 +27,16 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
+public class MainActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener,
+        LoaderManager.LoaderCallbacks<Cursor>{
+
+    /** Identifier for the product data loader */
+    private static final int PRODUCT_LOADER = 0;
+
+    /** Adapter for the ListView */
+    ProductCursorAdapter mProductCursorAdapter;
 
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
@@ -33,103 +46,77 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
     private static final int ADD_DUMMY_POSITION = 1;
     private static final int DELETE_PRODUCTS_POSITION = 0;
 
-    private ProductDbHelper mDbHelper;
-    private SQLiteDatabase db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Find the ListView which will be populated with the products data
+        ListView productListView = findViewById(R.id.product_lv);
+
+        // Set a default empty view if no data in database
+        View emptyView = findViewById(R.id.lv_empty_view);
+        productListView.setEmptyView(emptyView);
+
+        // Setup an Adapter to create a list item for each row of product data in the Cursor
+        // There is no product data yet (until the loader finishes) so pass in null for the Cursor
+        mProductCursorAdapter = new ProductCursorAdapter(this, null);
+        productListView.setAdapter(mProductCursorAdapter);
+
+        // Setup the item click listener
+        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Create new intent to go to {@link EditorActivity}
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+
+                // Form the content URI that represents the specific product that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link ProductEntry#CONTENT_URI}.
+                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.PRODUCTS_CONTENT_URI, id);
+
+                // Set the URI on teh data field of the intent
+                intent.setData(currentProductUri);
+
+                // Launch the {@link EditorActivity} to display the data for the current product.
+                startActivity(intent);
+            }
+        });
+
+        // Kick off the Cursor Loader
+        getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
 
         // Setup the third party floating action buttons
         rfaLayout = findViewById(R.id.activity_main_rfal);
         rfaBtn = findViewById(R.id.activity_main_rfab);
         setupFloatingActionButtons();
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity
-        mDbHelper = new ProductDbHelper(this);
-        displayDatabaseInfo();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+    /** Method to insert dummy data */
+    private void insertProducts() {
+        String productName = getString(R.string.dummy_product_name);
+        String supplierPhone = getString(R.string.dummy_supplier_phone);
+        double productPrice = 21.859522;
+        // Format the price to have only 2 decimal points
+        productPrice = Math.round(productPrice * 100.0) / 100.0;
+        int productQuantity = 6;
+
+        // Create an instance of ContentValues to help us with the data
+        ContentValues productsValues = new ContentValues();
+        // Add data as pairs of keys:values (column name and value)
+        productsValues.put(ProductEntry.COLUMN_PRODUCT_NAME, productName);
+        productsValues.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
+        productsValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+        productsValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, getString(R.string.dummy_supplier_name));
+        productsValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, supplierPhone);
+
+        Uri newRowUri = getContentResolver().insert(ProductEntry.PRODUCTS_CONTENT_URI, productsValues);
+
     }
 
-    /** Method to display some database information */
-    private void displayDatabaseInfo() {
-        Cursor cursor = queryData();
-        try {
-            TextView displayView = findViewById(R.id.display_view);
-            TextView rowValues = findViewById(R.id.row_values);
-
-            displayView.setText("Number of rows in products table : " + cursor.getCount() + "\n\n");
-            // Get all the column names in an array
-            String[] tableColumns = cursor.getColumnNames();
-            // Make the array into a single string
-            String tableColumnsString = Arrays.toString(tableColumns);
-            // Format the array string
-            tableColumnsString = tableColumnsString
-                    .replace("[", "")
-                    .replace("]", "")
-                    .replace(", ", " - ");
-            // Set the new string to the columnNames TextView
-            displayView.append(tableColumnsString);
-
-            // Initialise rowValues TextView to empty before the loop
-            rowValues.setText("");
-
-            // Find all the table columns indices now that we have the cursor
-            int indexColumnId = cursor.getColumnIndex(ProductEntry._ID);
-            int indexColumnName = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_NAME);
-            int indexColumnPrice = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_PRICE);
-            int indexColumnQuantity = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-            int indexColumnSupplier = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME);
-            int indexColumnSupplierPhone = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE);
-
-            // Loop through all of the table rows indices
-            // moveToNext() will return false when there are no more rows to go to
-            while(cursor.moveToNext()) {
-
-                // Get the column value at this row index, by passing in the column index
-                int currentId = cursor.getInt(indexColumnId);
-                String currentName = cursor.getString(indexColumnName);
-                String currentPrice = cursor.getString(indexColumnPrice);
-                String currentQuantity = cursor.getString(indexColumnQuantity);
-                String currentSupplier = cursor.getString(indexColumnSupplier);
-                String currentSupplierPhone = cursor.getString(indexColumnSupplierPhone);
-
-                // Append the data to the empty rowValues TextView
-                rowValues.append(currentId + " - " + currentName + " - " + currentPrice + " - " + currentQuantity
-                        + " - " + currentSupplier + " - " + currentSupplierPhone + "\n");
-            }
-
-        } finally {
-            cursor.close();
-        }
-    }
-
-    /** Method to query database and return the cursor */
-    private Cursor queryData() {
-        // Create and/or open a database to read from it
-        db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query(
-                ProductEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        // Return the resulted cursor
-        return cursor;
-    }
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-        Toast.makeText(this, "clicked label: " + position, Toast.LENGTH_SHORT).show();
         rfabHelper.toggleContent();
     }
 
@@ -143,38 +130,41 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
             case ADD_DUMMY_POSITION:
                 // Insert dummy data
                 insertProducts();
-                // Display db info again
-                displayDatabaseInfo();
                 break;
             case DELETE_PRODUCTS_POSITION:
-                db.delete(ProductEntry.TABLE_NAME, null, null);
-                displayDatabaseInfo();
+                showDeleteConfirmationDialog();
                 break;
         }
         rfabHelper.toggleContent();
     }
+    /** Method to show a deletion dialog before deleting all data */
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.delete_all_products_question));
+        builder.setPositiveButton(getString(R.string.delete_option), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User clicked on "Delete", so delete all products
+                deleteProducts();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel_option), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // User clicked on "Cancel", so dismiss the dialog
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
-    /** Method to insert dummy data */
-    private void insertProducts() {
-        String productName = "New Item";
-        double productPrice = 21.859522;
-        // Format the price to have only 2 decimal points
-        productPrice = Math.round(productPrice * 100.0) / 100.0;
-        int productQuantity = 6;
-
-        // Create an instance of ContentValues to help us with the data
-        ContentValues productsValues = new ContentValues();
-        // Add data as pairs of keys:values (column name and value)
-        productsValues.put(ProductEntry.COLUMN_PRODUCT_NAME, productName);
-        productsValues.put(ProductEntry.COLUMN_PRODUCT_PRICE, productPrice);
-        productsValues.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
-        productsValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME, getString(R.string.supplier_one));
-        productsValues.put(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE, ProductEntry.SUPPLIER_ONE_PHONE);
-        // Insert the data into the database
-        db = mDbHelper.getWritableDatabase();
-        long newRowId = db.insert(ProductEntry.TABLE_NAME, null, productsValues);
-        Toast rowId = Toast.makeText(this, "Added product with row id : " + newRowId, Toast.LENGTH_LONG);
-        rowId.show();
+    /** Method to delete all products */
+    private void deleteProducts() {
+        getContentResolver().delete(ProductEntry.PRODUCTS_CONTENT_URI, null, null);
     }
 
     /** Method to setup the floating action buttons */
@@ -218,5 +208,39 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
                 rfaBtn,
                 rfaContent
         ).build();
+    }
+
+    /** Overriding the Loader methods */
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+
+        // Define a projection that specifies the columns from the table we care about.
+        String[] projection = {
+                ProductEntry._ID,
+                ProductEntry.COLUMN_PRODUCT_NAME,
+                ProductEntry.COLUMN_PRODUCT_PRICE,
+                ProductEntry.COLUMN_PRODUCT_QUANTITY
+        };
+
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(
+                this,
+                ProductEntry.PRODUCTS_CONTENT_URI,
+                projection,
+                null,
+                null,
+                null );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Update {@link ProductCursorAdapter} with this new cursor containing updated product data
+        mProductCursorAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Callback called when the data needs to be deleted
+        mProductCursorAdapter.swapCursor(null);
     }
 }

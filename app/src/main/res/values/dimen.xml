@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="null_size">0dp</dimen>
     <dimen name="rfa_margin">15dp</dimen>
     <dimen name="rfa_padding">8dp</dimen>
     <dimen name="rfa_shadow_radius">7dp</dimen>
     <dimen name="rfa_shadow_x">0dp</dimen>
     <dimen name="rfa_shadow_y">5dp</dimen>
+    <dimen name="product_list_item_height">100dp</dimen>
+    <dimen name="product_list_item_padding">16dp</dimen>
+    <dimen name="product_name_size">20sp</dimen>
+    <dimen name="product_sell_size">24sp</dimen>
+    <dimen name="empty_view_padding">32dp</dimen>
+    <dimen name="empty_view_big_text_size">26sp</dimen>
+    <dimen name="editor_layout_padding">16dp</dimen>
+    <dimen name="editor_summary_padding_top">16dp</dimen>
+    <dimen name="editor_call_supplier_text_size">24sp</dimen>
+    <dimen name="editor_call_supplier_margin_top">32dp</dimen>
 </resources>

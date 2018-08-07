@@ -7,25 +7,25 @@ import com.example.android.invetoryapp.data.ProductContract.ProductEntry;
 
 public class ProductDbHelper extends SQLiteOpenHelper {
 
-    public static final StringBuilder sqlBuilder = new StringBuilder();
+    private static final StringBuilder sqlBuilder = new StringBuilder();
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
     // Creating Strings for SQL statement
-    public static final String DATABASE_NAME = "Products.db";
-    public static final String PRIMARY_KEY_AI = " INTEGER PRIMARY KEY AUTOINCREMENT";
-    public static final String CREATE_TABLE = "CREATE TABLE ";
-    public static final String TEXT_TYPE = " TEXT";
-    public static final String INTEGER_TYPE = " INTEGER";
-    public static final String DECIMAL_TYPE = " DECIMAL(10,2)";
-    public static final String NOT_NULL = " NOT NULL";
-    public static final String DEFAULT = " DEFAULT ";
-    public static final String OPEN_PARANTHESES = "(";
-    public static final String CLOSE_PARANTHESES = ")";
-    public static final String COMMA_SEP = ", ";
+    private static final String DATABASE_NAME = "Products.db";
+    private static final String PRIMARY_KEY_AI = " INTEGER PRIMARY KEY AUTOINCREMENT";
+    private static final String CREATE_TABLE = "CREATE TABLE ";
+    private static final String TEXT_TYPE = " TEXT";
+    private static final String INTEGER_TYPE = " INTEGER";
+    private static final String DECIMAL_TYPE = " DECIMAL(10,2)";
+    private static final String NOT_NULL = " NOT NULL";
+    private static final String DEFAULT = " DEFAULT ";
+    private static final String OPEN_PARANTHESES = "(";
+    private static final String CLOSE_PARANTHESES = ")";
+    private static final String COMMA_SEP = ", ";
 
     // Using a StringBuilder to create our statement
-    public static final String createTableStatement() {
+    private static String createTableStatement() {
         sqlBuilder.append(CREATE_TABLE).append(ProductEntry.TABLE_NAME).append(OPEN_PARANTHESES).append(ProductEntry._ID).append(PRIMARY_KEY_AI)
                 .append(COMMA_SEP).append(ProductEntry.COLUMN_PRODUCT_NAME).append(TEXT_TYPE).append(NOT_NULL).append(COMMA_SEP)
                 .append(ProductEntry.COLUMN_PRODUCT_PRICE).append(DECIMAL_TYPE).append(NOT_NULL).append(DEFAULT).append(0.00)
@@ -36,9 +36,9 @@ public class ProductDbHelper extends SQLiteOpenHelper {
         return sqlBuilder.toString();
     }
 
-    public static final String SQL_CREATE_ENTRIES = createTableStatement();
+    private static final String SQL_CREATE_ENTRIES = createTableStatement();
 
-    public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + ProductEntry.TABLE_NAME;
+    private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + ProductEntry.TABLE_NAME;
 
     public ProductDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
