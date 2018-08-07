@@ -102,16 +102,33 @@
                     android:inputType="phone" />
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="@dimen/editor_call_supplier_text_size"
-            android:text="@string/call_supplier"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/editor_call_supplier_margin_top"
-            android:textColor="@color/add_icon_color"
-            android:textAllCaps="true"
-            android:id="@+id/call_supplier_tv"
-            android:visibility="gone"/>
+            android:background="@drawable/button"
+            android:id="@+id/call_supplier_button"
+            android:visibility="gone">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/phone"
+                android:tint="@color/call_supplier_color"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="@dimen/editor_call_supplier_text_size"
+                android:text="@string/call_supplier"
+                android:textColor="@color/call_supplier_color"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/editor_call_supplier_margin_left"
+                android:layout_marginStart="@dimen/editor_call_supplier_margin_left" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

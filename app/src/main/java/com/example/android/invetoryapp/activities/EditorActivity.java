@@ -17,7 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.android.invetoryapp.R;
@@ -51,7 +51,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText editProductQuantity;
     private EditText editSupplierName;
     private EditText editSupplierPhone;
-    private TextView callSupplierTV;
+    private LinearLayout callSupplierLL;
     private String supplierName;
     private String supplierPhone;
     private String productName;
@@ -70,7 +70,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         Intent intent = getIntent();
         mCurrentProductUri = intent.getData();
 
-        callSupplierTV = findViewById(R.id.call_supplier_tv);
+        callSupplierLL = findViewById(R.id.call_supplier_button);
 
         // If the intent DOES NOT contain a product content URI, then we know that we are
         // creating a new product.
@@ -81,7 +81,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             invalidateOptionsMenu();
 
             // Hide the call supplier TextView
-            callSupplierTV.setVisibility(View.GONE);
+            callSupplierLL.setVisibility(View.GONE);
         } else {
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.editor_activity_edit));
@@ -91,7 +91,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
 
             // Show "Call supplier" TextView
-            callSupplierTV.setVisibility(View.VISIBLE);
+            callSupplierLL.setVisibility(View.VISIBLE);
         }
 
         // Getting all edit texts
@@ -426,7 +426,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             editSupplierName.setText(supplierName);
             editSupplierPhone.setText(supplierPhone);
 
-            callSupplierTV.setOnClickListener(new View.OnClickListener() {
+            callSupplierLL.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String uri = "tel:" + supplierPhone.trim();

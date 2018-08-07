@@ -21,4 +21,5 @@
     <color name="add_icon_color_pressed">#388E3C</color>
     <color name="add_dummy_color">#00BCD4</color>
     <color name="add_dummy_color_pressed">#0097A7</color>
+    <color name="call_supplier_color">#FFFFFF</color>
 </resources>
