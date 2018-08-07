@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private String productName;
     private double productPrice;
     private int productQuantity;
+    private ImageView increaseQuantityIV;
+    private ImageView decreaseQuantityIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         editProductName = findViewById(R.id.edit_product_name);
         editProductPrice = findViewById(R.id.edit_product_price);
         editProductQuantity = findViewById(R.id.edit_product_quantity);
+        increaseQuantityIV = findViewById(R.id.increase_quantity);
+        decreaseQuantityIV = findViewById(R.id.decrease_quantity);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -107,6 +112,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         editProductName.setOnTouchListener(mTouchListener);
         editProductPrice.setOnTouchListener(mTouchListener);
         editProductQuantity.setOnTouchListener(mTouchListener);
+        increaseQuantityIV.setOnTouchListener(mTouchListener);
+        decreaseQuantityIV.setOnTouchListener(mTouchListener);
+
+        increaseQuantityIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productQuantity++;
+                editProductQuantity.setText(Integer.toString(productQuantity));
+            }
+        });
+        decreaseQuantityIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(productQuantity == 0) return;
+                productQuantity--;
+                editProductQuantity.setText(Integer.toString(productQuantity));
+            }
+        });
 
     }
 
@@ -392,6 +415,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String productName = cursor.getString(productNameColIndex);
             float productPrice = cursor.getFloat(productPriceColIndex);
             int productQuantity = cursor.getInt(productQuantityColIndex);
+            this.productQuantity = productQuantity;
             String supplierName = cursor.getString(supplierNameColIndex);
             final String supplierPhone = cursor.getString(supplierPhoneColIndex);
 
