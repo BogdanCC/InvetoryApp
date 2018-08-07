@@ -12,7 +12,7 @@ public final class ProductContract {
      * It's the name for the entire content provider, similar to a website's domain name
      * A convenient name for the content authority is the package name of the app, which is guaranteed
      * to be unique on the device */
-    public static final String CONTENT_AUTHORITY = "com.example.android.inventoryapp";
+    public static final String CONTENT_AUTHORITY = "com.example.android.invetoryapp";
 
     /**
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact

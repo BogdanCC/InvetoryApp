@@ -92,13 +92,9 @@ public class ProductCursorAdapter extends CursorAdapter{
                 // Create the URI for this product
                 Uri thisProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.PRODUCTS_CONTENT_URI, productId);
 
-                // If there is no product left, disable button
-                if(productQuantity == 0) {
-                    return;
-                }
-
+                // If there is no product left, do nothing
                 // Otherwise, subtract 1 from quantity and update product info
-                else {
+                if(productQuantity > 0) {
                     // Subtract one from product quantity
                     int newQuantity = productQuantity - 1;
                     // Create a new ContentValues object with the updated quantity

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
 
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
-    private RapidFloatingActionHelper rfabHelper;
+    private RapidFloatingActionHelper rfaHelper;
 
     private static final int ADD_PRODUCT_POSITION = 2;
     private static final int ADD_DUMMY_POSITION = 1;
@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
     }
 
     /** Method to insert dummy data */
-    private void insertProducts() {
+    private void insertDummyProduct() {
         String productName = getString(R.string.dummy_product_name);
         String supplierPhone = getString(R.string.dummy_supplier_phone);
-        double productPrice = 21.859522;
+        double productPrice = 21.99;
         // Format the price to have only 2 decimal points
         productPrice = Math.round(productPrice * 100.0) / 100.0;
-        int productQuantity = 6;
+        int productQuantity = 5;
 
         // Create an instance of ContentValues to help us with the data
         ContentValues productsValues = new ContentValues();
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
 
     @Override
     public void onRFACItemLabelClick(int position, RFACLabelItem item) {
-        rfabHelper.toggleContent();
+        rfaHelper.toggleContent();
     }
 
     @Override
@@ -129,13 +129,13 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
                 break;
             case ADD_DUMMY_POSITION:
                 // Insert dummy data
-                insertProducts();
+                insertDummyProduct();
                 break;
             case DELETE_PRODUCTS_POSITION:
                 showDeleteConfirmationDialog();
                 break;
         }
-        rfabHelper.toggleContent();
+        rfaHelper.toggleContent();
     }
     /** Method to show a deletion dialog before deleting all data */
     private void showDeleteConfirmationDialog() {
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements RapidFloatingActi
                 .setIconShadowRadius(RFABTextUtil.dip2px(this, 5))
                 .setIconShadowColor(0xff777777)
                 .setIconShadowDy(RFABTextUtil.dip2px(this, 5));
-        rfabHelper = new RapidFloatingActionHelper(
+        rfaHelper = new RapidFloatingActionHelper(
                 this,
                 rfaLayout,
                 rfaBtn,

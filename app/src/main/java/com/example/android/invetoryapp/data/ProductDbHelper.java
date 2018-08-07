@@ -20,19 +20,19 @@ public class ProductDbHelper extends SQLiteOpenHelper {
     private static final String DECIMAL_TYPE = " DECIMAL(10,2)";
     private static final String NOT_NULL = " NOT NULL";
     private static final String DEFAULT = " DEFAULT ";
-    private static final String OPEN_PARANTHESES = "(";
-    private static final String CLOSE_PARANTHESES = ")";
+    private static final String OPEN_PARENTHESES = "(";
+    private static final String CLOSE_PARENTHESES = ")";
     private static final String COMMA_SEP = ", ";
 
     // Using a StringBuilder to create our statement
     private static String createTableStatement() {
-        sqlBuilder.append(CREATE_TABLE).append(ProductEntry.TABLE_NAME).append(OPEN_PARANTHESES).append(ProductEntry._ID).append(PRIMARY_KEY_AI)
+        sqlBuilder.append(CREATE_TABLE).append(ProductEntry.TABLE_NAME).append(OPEN_PARENTHESES).append(ProductEntry._ID).append(PRIMARY_KEY_AI)
                 .append(COMMA_SEP).append(ProductEntry.COLUMN_PRODUCT_NAME).append(TEXT_TYPE).append(NOT_NULL).append(COMMA_SEP)
                 .append(ProductEntry.COLUMN_PRODUCT_PRICE).append(DECIMAL_TYPE).append(NOT_NULL).append(DEFAULT).append(0.00)
                 .append(COMMA_SEP).append(ProductEntry.COLUMN_PRODUCT_QUANTITY).append(INTEGER_TYPE).append(NOT_NULL).append(DEFAULT)
                 .append(0).append(COMMA_SEP).append(ProductEntry.COLUMN_PRODUCT_SUPPLIER_NAME).append(TEXT_TYPE).append(NOT_NULL)
                 .append(DEFAULT).append("Unknown").append(COMMA_SEP).append(ProductEntry.COLUMN_PRODUCT_SUPPLIER_PHONE)
-                .append(TEXT_TYPE).append(NOT_NULL).append(CLOSE_PARANTHESES).append(";");
+                .append(TEXT_TYPE).append(NOT_NULL).append(CLOSE_PARENTHESES).append(";");
         return sqlBuilder.toString();
     }
 
